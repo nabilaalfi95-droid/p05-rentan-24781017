@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>24781017 - Endpoint Diagnostik (Rentan Leakage)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    button { padding: 8px 16px; font-size: 14px; cursor: pointer; }
+    .card { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px; padding: 16px; margin-top: 16px; }
+    pre { background: #1e293b; color: #f87171; padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h2>Endpoint Diagnostik (Implementasi Rentan Security Misconfiguration)</h2>
+  <p><strong>Mahasiswa:</strong> NABILA ALFI NUR KHASANAH · <strong>NPM:</strong> 24781017 · <strong>Kelas:</strong> MI5A</p>
+  <p><strong>Status Konfigurasi:</strong> <code>DEBUG = true</code></p>
+
+  <button onclick="triggerError()">Uji Diagnostik Error</button>
+
+  <div class="card">
+    <h4>Response Server:</h4>
+    <pre id="output">Tekan tombol di atas untuk menjalankan pengujian.</pre>
+  </div>
+
+  <script>
+    const CONFIG = {
+      DEBUG: true,
+      ENVIRONMENT: "production",
+      SECRET: "super_secret_diagnostic_key_24781017"
+    };
+
+    function triggerError() {
+      try {
+        throw new Error("DatabaseConnectionTimeoutException: Connection pool exhausted at db.cluster:5432");
+      } catch (err) {
+        // Kerentanan: Ketika DEBUG true, aplikasi merender detail error, stack trace, dan secret ke response publik
+        if (CONFIG.DEBUG) {
+          document.getElementById("output").textContent = 
+            "HTTP 500 Internal Server Error\n" +
+            "Message: " + err.message + "\n" +
+            "Stack Trace: " + err.stack + "\n" +
+            "Server Environment: " + CONFIG.ENVIRONMENT + "\n" +
+            "Diagnostic Secret: " + CONFIG.SECRET;
+        } else {
+          document.getElementById("output").textContent = "500 Internal Server Error";
+        }
+      }
+    }
+  </script>
+</body>
+</html>

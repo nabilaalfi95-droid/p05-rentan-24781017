@@ -1,0 +1,120 @@
+/* == KANONIK:MULAI v1 ==
+   Standar UI terukur lintas Mata Kuliah (ditetapkan pengawas 2026-10-01)
+   Sumber tunggal: <proyek>/00_Standar_UI/pa-standard.css
+   Salin byte-per-byte ke assets/pa-standard.css di SETIAP paket (file:// tidak bisa load lintas folder).
+   JANGAN edit salinan di paket langsung — edit sumber ini lalu salin ulang + rebuild ZIP + gate.
+   CSS khusus paket boleh menambah komponen UNIK saja; dilarang menimpa token/ukuran di bawah.
+*/
+:root{
+  --navy:#0b1f3a;
+  --navy-dark:#081527;
+  --cyan:#22d3ee;
+  --lab-bg:#eef3fb;
+  --ink:#17253b;
+  --muted:#5b6b85;
+  --line:#cbd5e1;
+  --ok:#087a55;
+  --bad:#b42318;
+  --warn:#92400e;
+  --paper:#ffffff;
+  --radius:14px;
+}
+
+html{-webkit-text-size-adjust:100%;}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:"Segoe UI",system-ui,Arial,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ink);
+  background:var(--lab-bg);
+}
+code,pre,.sql-editor,textarea.code{font-family:Consolas,"Courier New",monospace;font-size:14px;}
+button,input,textarea,select{font:inherit;}
+button{cursor:pointer;}
+
+/* ===== Header (132-140px) ===== */
+.site-header{
+  min-height:136px;
+  height:136px;
+  background:linear-gradient(125deg,var(--navy-dark),var(--navy));
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:0 clamp(18px,4vw,56px);
+  border-bottom:4px solid var(--cyan);
+}
+.brand-logos{display:flex;gap:10px;align-items:center;flex:0 0 auto;}
+.brand-logos .logo-card{
+  background:#fff;border-radius:10px;padding:5px;
+  display:grid;place-items:center;width:56px;height:56px;
+}
+.brand-logos img{width:56px;height:56px;object-fit:contain;display:block;}
+.header-copy{flex:1 1 auto;min-width:0;}
+.header-copy .eyebrow,.header-copy .kicker{
+  font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);
+  margin:0 0 4px;
+}
+.header-copy h1{margin:0 0 4px;font-size:32px;font-weight:700;line-height:1.15;}
+.header-copy p,.header-copy .subjudul{margin:0;font-size:15px;color:#dbeafe;}
+
+/* ===== Tab bar ===== */
+.tabs{
+  position:sticky;top:0;z-index:5;
+  display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:6px;
+  padding:8px;background:#fff;border-bottom:1px solid var(--line);
+  box-shadow:0 4px 15px #0b1f3a10;overflow-x:auto;
+}
+.tabs button{
+  flex:0 0 auto;
+  min-height:46px;height:46px;
+  display:inline-flex;align-items:center;
+  border:0;background:transparent;color:var(--navy);
+  border-radius:9px;padding:0 14px;
+  font-size:15px;font-weight:600;white-space:nowrap;
+}
+.tabs button.active{background:var(--navy);color:#fff;}
+.tab-number{
+  display:inline-grid;place-items:center;width:23px;height:23px;margin-right:7px;
+  border-radius:50%;background:#d9f9ff;color:var(--navy);font-size:.72rem;
+}
+.tabs button.active .tab-number{background:var(--cyan);}
+
+/* ===== Layout / cards ===== */
+main{max-width:1180px;margin:auto;}
+.tab{display:none;}
+.tab.active{display:block;}
+.panel,.card{
+  margin:24px clamp(12px,4vw,24px);
+  padding:24px;
+  background:#fff;border:1px solid #dde5ef;border-radius:14px;
+  box-shadow:0 10px 30px #0b1f3a0d;
+}
+h2,.panel>h2{color:var(--navy);font-size:24px;font-weight:700;margin-top:.2rem;}
+h3,.theory-section h3{color:var(--navy);font-size:19px;font-weight:700;}
+p{font-size:16px;}
+
+/* ===== Buttons / inputs ===== */
+button{
+  min-height:44px;height:auto; /* 2026-10-02: jangan patok tinggi -> tombol multi-baris (.task-link) menumpuk */
+  border:1px solid #9dabbc;background:#fff;color:var(--navy);
+  padding:0 16px;border-radius:8px;font-size:15px;font-weight:600;
+}
+button.primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+button.danger{color:var(--bad);border-color:#e6aaa5;}
+textarea{display:block;width:100%;box-sizing:border-box;min-height:120px;border:1px solid #aebaca;border-radius:7px;padding:8px 10px;font:inherit;} /* 2026-10-02 */
+input,select{min-height:44px;border:1px solid #aebaca;border-radius:7px;padding:0 10px;background:#fff;color:var(--ink);}
+textarea{min-height:120px;border:1px solid #aebaca;border-radius:7px;padding:10px;background:#fff;color:var(--ink);}
+table{font-size:14px;}
+
+/* ===== Mobile (<=800px) ===== */
+@media(max-width:800px){
+  .site-header{height:auto;min-height:132px;padding:14px clamp(14px,4vw,24px);flex-wrap:wrap;}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;gap:4px;}
+  .tabs button{min-width:0;width:100%;white-space:normal;padding:6px 4px;font-size:13px;}
+  html,body{max-width:100%;overflow-x:hidden;}
+  .panel,.card{margin:14px 10px;padding:16px;}
+}
+/* == KANONIK:SELESAI v1 == */

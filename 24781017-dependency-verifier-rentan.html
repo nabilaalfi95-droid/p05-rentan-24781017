@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>24781017 - Verifier Token (Rentan Alg None)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    textarea, button { font-size: 14px; padding: 8px; }
+    textarea { width: 100%; box-sizing: border-box; }
+    .card { background: #fef2f2; border: 1px solid #f87171; border-radius: 8px; padding: 16px; margin-top: 16px; }
+    .status-bad { color: #dc2626; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Verifier Token (Implementasi Rentan Komponen Usang)</h2>
+  <p><strong>Mahasiswa:</strong> NABILA ALFI NUR KHASANAH · <strong>NPM:</strong> 24781017 · <strong>Kelas:</strong> MI5A</p>
+  <p><strong>Pustaka:</strong> <code>token-kit@1.0.0 (Legacy Component)</code></p>
+
+  <div>
+    <label for="jwt">Token JWT (Unsigned):</label>
+    <textarea id="jwt" rows="3">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcnVzZXIifQ.</textarea>
+    <button onclick="verifikasiToken()">Verifikasi Token</button>
+  </div>
+
+  <div class="card">
+    <h4>Hasil Verifikasi:</h4>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    // Komponen versi usang 1.0.0
+    const OLD_VERIFIER_VER = "1.0.0";
+
+    function decodeJwtPayload(token) {
+      try {
+        const parts = token.split(".");
+        const payloadStr = atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"));
+        return JSON.parse(payloadStr);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function verifikasiToken() {
+      const token = document.getElementById("jwt").value.trim();
+      const parts = token.split(".");
+      const header = JSON.parse(atob(parts[0].replace(/-/g, "+").replace(/_/g, "/")));
+      
+      const out = document.getElementById("output");
+      // Kerentanan library lama: Mengizinkan algoritma 'none' tanpa validasi signature
+      if (header.alg === "none") {
+        const payload = decodeJwtPayload(token);
+        out.innerHTML = "<p class='status-bad'>Token Valid! (ACCEPTED: Pustaka " + OLD_VERIFIER_VER + " menerima unsigned token dengan alg 'none')</p>" +
+          "<p><strong>Subject:</strong> " + payload.sub + "<br>" +
+          "<strong>Role Diterima:</strong> " + payload.role + "</p>";
+      } else {
+        out.innerHTML = "<p>Signature tidak valid</p>";
+      }
+    }
+    window.onload = verifikasiToken;
+  </script>
+</body>
+</html>

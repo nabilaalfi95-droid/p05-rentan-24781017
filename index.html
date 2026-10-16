@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P05 OWASP Top 10 - Versi Rentan (Vulnerable) | 24781017</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --border: #dc2626;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #ef4444;
+      --accent-glow: rgba(239, 68, 68, 0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .header {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      border: 1px solid #374151;
+      border-top: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .brand img { height: 48px; background: #fff; padding: 4px; border-radius: 6px; }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-vulnerable {
+      background: #7f1d1d;
+      color: #fca5a5;
+      border: 1px solid #ef4444;
+    }
+    h1 { font-size: 24px; font-weight: 800; margin: 8px 0; color: #fff; }
+    .meta-box {
+      background: rgba(0,0,0,0.3);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+      font-size: 14px;
+    }
+    .meta-box span { color: var(--muted); }
+    .meta-box strong { color: #fff; }
+    
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      background: #1f2937;
+      color: #9ca3af;
+      border: 1px solid #374151;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover { background: #374151; color: #fff; }
+    .tab-btn.active {
+      background: #dc2626;
+      color: #fff;
+      border-color: #ef4444;
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+    
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid #374151;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .card-header {
+      padding: 16px 20px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card-header h2 { font-size: 18px; color: #fff; }
+    .card-body { padding: 20px; }
+    .desc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .desc-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #1f2937;
+      vertical-align: top;
+    }
+    .desc-table td:first-child {
+      width: 180px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .code-pill {
+      background: #0f172a;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #f87171;
+      font-size: 13px;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #dc2626;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .btn-action:hover { background: #b91c1c; }
+    
+    .iframe-wrapper {
+      margin-top: 16px;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .iframe-bar {
+      background: #1f2937;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #9ca3af;
+      border-bottom: 1px solid #374151;
+    }
+    iframe {
+      width: 100%;
+      height: 380px;
+      border: none;
+      display: block;
+      background: #fff;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid #1f2937;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <img src="assets/logo-polinela.png" alt="Polinela" onerror="this.style.display='none'">
+        <img src="assets/logo-sdgs.jpg" alt="SDGs" onerror="this.style.display='none'">
+        <span class="badge badge-vulnerable">⚠️ VERSI RENTAN (VULNERABLE)</span>
+      </div>
+      <h1>P05: OWASP Top 10 — Demonstrasi Sistem Rentan</h1>
+      <p style="color: #9ca3af; font-size: 14px;">
+        Dokumentasi audit dan verifikasi live kerentanan web & API untuk mata kuliah Keamanan Sistem Informasi (PMI_1522).
+      </p>
+      
+      <div class="meta-box">
+        <div><span>Mahasiswa:</span> <strong>NABILA ALFI NUR KHASANAH</strong></div>
+        <div><span>NPM:</span> <strong>24781017</strong></div>
+        <div><span>Kelas:</span> <strong>MI 5A</strong></div>
+        <div><span>Semester:</span> <strong>5 (Ganjil 2026/2027)</strong></div>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="showTask(1)">1. Injection (Pencarian Produk)</button>
+      <button class="tab-btn" onclick="showTask(2)">2. IDOR (Dokumen Privat)</button>
+      <button class="tab-btn" onclick="showTask(3)">3. Misconfiguration (Diagnostik)</button>
+      <button class="tab-btn" onclick="showTask(4)">4. Outdated Component (Token)</button>
+    </div>
+
+    <!-- TASK 1 -->
+    <div id="panel-1" class="task-card">
+      <div class="card-header">
+        <h2>Kasus 1: A03:2021 — Injection (Pencarian Produk)</h2>
+        <a href="24781017-product-search-rentan.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A03:2021 - Injection</strong></td></tr>
+          <tr><td>Kerentanan</td><td>Penggabungan string input pengguna secara mentah ke klausa SQL WHERE tanpa parameter binding.</td></tr>
+          <tr><td>Payload Uji</td><td><code class="code-pill">' OR 1=1 --</code></td></tr>
+          <tr><td>Dampak Eksploitasi</td><td>Tautologi SQL mengembalikan seluruh baris data dalam tabel (termasuk item tidak aktif milik admin) dan membocorkan data inventaris privat.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-product-search-rentan.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🔴 Live Sandbox: Versi Rentan</span>
+            <span>File: 24781017-product-search-rentan.html</span>
+          </div>
+          <iframe src="24781017-product-search-rentan.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK 2 -->
+    <div id="panel-2" class="task-card" style="display:none;">
+      <div class="card-header">
+        <h2>Kasus 2: A01:2021 — Broken Access Control (Dokumen Privat)</h2>
+        <a href="24781017-private-document-rentan.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A01:2021 - Broken Access Control (IDOR)</strong></td></tr>
+          <tr><td>Kerentanan</td><td>Aplikasi mengambil dan menampilkan rekaman dokumen hanya berdasarkan ID permintaan tanpa memverifikasi hak milik sesi pengguna saat ini.</td></tr>
+          <tr><td>Payload Uji</td><td>ID Dokumen: <code class="code-pill">SEC-02</code> (Milik userB, diakses oleh userA)</td></tr>
+          <tr><td>Dampak Eksploitasi</td><td>Pengguna `userA` berhasil membaca informasi rahasia milik `userB` (HTTP 200 OK), melanggar integritas otorisasi akses objek.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-private-document-rentan.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🔴 Live Sandbox: Versi Rentan</span>
+            <span>File: 24781017-private-document-rentan.html</span>
+          </div>
+          <iframe src="24781017-private-document-rentan.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK 3 -->
+    <div id="panel-3" class="task-card" style="display:none;">
+      <div class="card-header">
+        <h2>Kasus 3: A05:2021 — Security Misconfiguration (Diagnostik)</h2>
+        <a href="24781017-diagnostic-endpoint-rentan.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A05:2021 - Security Misconfiguration</strong></td></tr>
+          <tr><td>Kerentanan</td><td>Bendera konfigurasi `DEBUG = true` dibiarkan aktif di server production, menyebabkan handler error mengembalikan data internal sensitif.</td></tr>
+          <tr><td>Aksi Pemicu</td><td>Klik tombol "Uji Diagnostik Error"</td></tr>
+          <tr><td>Dampak Eksploitasi</td><td>Stack trace, skema koneksi database `db.cluster:5432`, dan secret key `super_secret_diagnostic_key_24781017` bocor ke publik.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-diagnostic-endpoint-rentan.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🔴 Live Sandbox: Versi Rentan</span>
+            <span>File: 24781017-diagnostic-endpoint-rentan.html</span>
+          </div>
+          <iframe src="24781017-diagnostic-endpoint-rentan.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASK 4 -->
+    <div id="panel-4" class="task-card" style="display:none;">
+      <div class="card-header">
+        <h2>Kasus 4: A06:2021 — Vulnerable and Outdated Components (Token)</h2>
+        <a href="24781017-dependency-verifier-rentan.html" target="_blank" class="btn-action">Buka Halaman Penuh ↗</a>
+      </div>
+      <div class="card-body">
+        <table class="desc-table">
+          <tr><td>Kategori OWASP</td><td><strong>A06:2021 - Vulnerable and Outdated Components</strong></td></tr>
+          <tr><td>Kerentanan</td><td>Penggunaan pustaka usang `token-kit@1.0.0` yang menerima algoritma penandatanganan `alg: "none"` tanpa verifikasi kriptografis.</td></tr>
+          <tr><td>Payload Uji</td><td>JWT tanpa signature: <code class="code-pill">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0...</code></td></tr>
+          <tr><td>Dampak Eksploitasi</td><td>Penyerang dapat memalsukan payload identitas (menjadi role: superuser) tanpa kunci rahasia dan berhasil diverifikasi oleh sistem.</td></tr>
+          <tr><td>File Sumber</td><td><code>24781017-dependency-verifier-rentan.html</code></td></tr>
+        </table>
+        
+        <div class="iframe-wrapper">
+          <div class="iframe-bar">
+            <span>🔴 Live Sandbox: Versi Rentan</span>
+            <span>File: 24781017-dependency-verifier-rentan.html</span>
+          </div>
+          <iframe src="24781017-dependency-verifier-rentan.html"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Politeknik Negeri Lampung — D-III Manajemen Informatika</p>
+      <p>Praktikum Keamanan Sistem Informasi P05 &copy; 2026 Nabila Alfi Nur Khasanah (24781017)</p>
+    </footer>
+  </div>
+
+  <script>
+    function showTask(index) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById("panel-" + i).style.display = (i === index) ? "block" : "none";
+      }
+      const btns = document.querySelectorAll(".tab-btn");
+      btns.forEach((btn, idx) => {
+        if (idx === index - 1) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+  </script>
+</body>
+</html>

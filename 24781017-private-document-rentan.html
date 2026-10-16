@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>24781017 - Dokumen Privat (Rentan IDOR)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    input, button { padding: 8px 12px; font-size: 14px; }
+    .card { background: #fef2f2; border: 1px solid #f87171; border-radius: 8px; padding: 16px; margin-top: 16px; }
+    .status-bad { color: #dc2626; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Penyimpanan Dokumen Privat (Implementasi Rentan Broken Access Control)</h2>
+  <p><strong>Mahasiswa:</strong> NABILA ALFI NUR KHASANAH · <strong>NPM:</strong> 24781017 · <strong>Kelas:</strong> MI5A</p>
+  <p><strong>Sesi Pengguna Saat Ini:</strong> <code>userA</code></p>
+
+  <div>
+    <label for="docId">Masukkan ID Dokumen:</label>
+    <input type="text" id="docId" value="SEC-02" placeholder="Contoh: SEC-02">
+    <button onclick="bukaDokumen()">Buka Dokumen</button>
+  </div>
+
+  <div class="card">
+    <h4>Respons Server:</h4>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const documents = [
+      { id: "SEC-01", owner: "userA", content: "Catatan Pribadi userA (Rahasia A)" },
+      { id: "SEC-02", owner: "userB", content: "Dokumen Finansial Rahasia Milik userB (Rahasia B)" }
+    ];
+    const currentUser = "userA";
+
+    function bukaDokumen() {
+      const id = document.getElementById("docId").value.trim();
+      // Kerentanan IDOR: Hanya mencocokkan ID tanpa memeriksa apakah owner === currentUser
+      const doc = documents.find(d => d.id === id);
+
+      const out = document.getElementById("output");
+      if (doc) {
+        out.innerHTML = "<p class='status-bad'>HTTP 200 OK (Eksploitasi Berhasil: Akses Lintas Pengguna Terbuka!)</p>" +
+          "<p><strong>ID:</strong> " + doc.id + "<br>" +
+          "<strong>Owner:</strong> " + doc.owner + "<br>" +
+          "<strong>Isi:</strong> " + doc.content + "</p>";
+      } else {
+        out.innerHTML = "<p>HTTP 404 Not Found</p>";
+      }
+    }
+    window.onload = bukaDokumen;
+  </script>
+</body>
+</html>

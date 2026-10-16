@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>24781017 - Pencarian Produk (Rentan)</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+    input, button { padding: 8px 12px; font-size: 14px; }
+    .card { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 16px; margin-top: 16px; }
+    .item { padding: 8px; border-bottom: 1px solid #e2e8f0; }
+    .status-bad { color: #dc2626; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Pencarian Produk (Implementasi Rentan Injection)</h2>
+  <p><strong>Mahasiswa:</strong> NABILA ALFI NUR KHASANAH · <strong>NPM:</strong> 24781017 · <strong>Kelas:</strong> MI5A</p>
+  
+  <div>
+    <label for="search">Nama Produk:</label>
+    <input type="text" id="search" placeholder="Contoh: ' OR 1=1 --" value="' OR 1=1 --">
+    <button onclick="cariProduk()">Cari</button>
+  </div>
+
+  <div class="card">
+    <h4>Hasil Query:</h4>
+    <p><strong>Query simulasi:</strong> <code id="query-sql">-</code></p>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Laptop", user: "admin", price: 1000, active: true },
+      { id: 2, name: "Mouse", user: "user", price: 50, active: true },
+      { id: 3, name: "Keyboard", user: "admin", price: 80, active: false }
+    ];
+
+    function cariProduk() {
+      const input = document.getElementById("search").value;
+      const query = "SELECT * FROM products WHERE name = '" + input + "' AND active = true";
+      document.getElementById("query-sql").textContent = query;
+      
+      let hasil = [];
+      // Simulasi parser ekspresi rentan konkatenasi
+      if (input.includes("' OR 1=1") || input.includes("' or 1=1") || input.includes("OR '1'='1")) {
+        hasil = products; // Tautologi: seluruh baris keluar
+      } else {
+        hasil = products.filter(p => p.name.toLowerCase() === input.toLowerCase() && p.active);
+      }
+
+      const resDiv = document.getElementById("results");
+      resDiv.innerHTML = "<p class='status-bad'>Ditemukan: " + hasil.length + " produk (Eksploitasi Berhasil! Seluruh data terekspos)</p>" +
+        hasil.map(p => "<div class='item'><strong>[" + p.id + "] " + p.name + "</strong> - Harga: $" + p.price + " (Owner: " + p.user + ", Active: " + p.active + ")</div>").join("");
+    }
+    window.onload = cariProduk;
+  </script>
+</body>
+</html>
